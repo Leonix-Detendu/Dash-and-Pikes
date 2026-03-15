@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Rendering.Universal.Internal;
 
 public class LifeAndDeathSystem : MonoBehaviour
 {
@@ -37,6 +38,24 @@ public class LifeAndDeathSystem : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Platform"))
+        {
+            CheckPointPlatforms currentCheckpoint = collision.gameObject.GetComponent<CheckPointPlatforms>();
+
+            if (currentCheckpoint != null)
+            {
+                ContactPoint2D contact = collision.GetContact(0);
+
+                if (contact.normal.y > 0.5f)
+                {
+                    newCheckPoint(currentCheckpoint);
+                }
+            }
+        }
+    }
+
     IEnumerator ResetInvulnerability()
     {
         yield return new WaitForSeconds(0.2f);
@@ -60,5 +79,12 @@ public class LifeAndDeathSystem : MonoBehaviour
             gameOver = true;
             Debug.Log("game over");
         }
+    }
+
+    private void newCheckPoint(CheckPointPlatforms CheckPoint)
+    {
+        respawnPos = CheckPoint.respawnPos;
+
+        Debug.Log("Nouveau point de respawn enregistré : " + respawnPos);
     }
 }
