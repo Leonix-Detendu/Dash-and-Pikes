@@ -27,7 +27,7 @@ public class MechanicPlatforms : PlatformsBase
         platformRb = GetComponent<Rigidbody2D>();
 
         angle *= Mathf.Deg2Rad;
-        initialPos = platformRb.position;
+        initialPos = transform.position;
         Vector2 direction = new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)).normalized;
         targetPos = initialPos + (direction * range);
 

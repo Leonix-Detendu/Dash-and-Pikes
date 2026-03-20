@@ -17,7 +17,7 @@ public class PlatformsMovementVertical : PlatformsBase
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        defaultYPosition = rb.position.y;
+        defaultYPosition = transform.position.y;
         totalRange = rangeUp + rangeDown;
         offset = startOffset * totalRange;
     }

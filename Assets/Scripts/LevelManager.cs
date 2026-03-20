@@ -14,7 +14,7 @@ public class LevelManager : MonoBehaviour
 
         Vector3 startLocalPos = firstLevelData.startPos.localPosition;
 
-        firstLevel.transform.position = startLocalPos;
+        firstLevel.transform.position = -startLocalPos;
 
         currentLevel = firstLevel;
     }

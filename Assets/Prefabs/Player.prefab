@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 8740858824466207109}
   - component: {fileID: 4019503978147064928}
   - component: {fileID: 3251859469624449792}
+  - component: {fileID: 3848247612004862396}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -264,4 +265,19 @@ MonoBehaviour:
   coyoteTime: 0.1
   jBMaxTime: 0.3
   inertiaJumpMaxTime: 0.3
-  activePlatformScript: {fileID: 0}
+  currentPBase: {fileID: 0}
+--- !u!114 &3848247612004862396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8823607740295910173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da20faa443615574d91e6f9cb1ff7607, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LifeAndDeathSystem
+  initialHealth: 3
+  gameOver: 0
+  respawnPos: {x: 0, y: 0}
