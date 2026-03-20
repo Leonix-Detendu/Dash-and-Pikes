@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        rb.position = new Vector3(0, 1.5f, 0);
         rb.gravityScale = defaultGS;
         isDashing = false;
         dashStack = 1;

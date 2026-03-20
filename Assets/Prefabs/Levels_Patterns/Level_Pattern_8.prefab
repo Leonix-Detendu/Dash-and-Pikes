@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6855722181758661979}
+  - component: {fileID: 4778117465223889482}
   m_Layer: 0
   m_Name: Level_Pattern_8
   m_TagString: Untagged
@@ -45,6 +46,22 @@ Transform:
   - {fileID: 8294670841405718231}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4778117465223889482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 234179869345923596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df215287291f384bb991fcbf34dfc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  startingPlatform: {fileID: 1079351043955891697}
+  endingPlatform: {fileID: 5054501818204609760}
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
 --- !u!1001 &741934187446640507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -164,8 +181,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1527919198028623221}
   m_SourcePrefab: {fileID: 100100000, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+--- !u!1 &5054501818204609760 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+  m_PrefabInstance: {fileID: 741934187446640507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1527919198028623221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5054501818204609760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 1
+  levelManager: {fileID: 0}
 --- !u!4 &5244674273857501142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4792729681170163885, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
@@ -440,10 +483,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fffeecac7bff79042be00ce8dc78493f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementHorizontal
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   rangeLeft: 0
   rangeRight: 10
   speed: 5
-  startMoveRight: 1
+  startOffset: 0
 --- !u!4 &8970010911733228474 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7921416577159922914, guid: 578a80249f8849e4fbfcaeadbf6a0755, type: 3}
@@ -1266,10 +1312,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28762a021266514469716f0feb17437e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementVertical
-  rangeDown: 1.125
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   rangeUp: 1.125
+  rangeDown: 1.125
   speed: 3
-  startMoveUp: 1
+  startOffset: 0
 --- !u!1001 &4761150340893826172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1475,10 +1524,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28762a021266514469716f0feb17437e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementVertical
-  rangeDown: 0
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   rangeUp: 2.25
+  rangeDown: 0
   speed: 3
-  startMoveUp: 0
+  startOffset: 0
 --- !u!4 &7405440389602447104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2654425364211782524, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}
@@ -1603,13 +1655,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7201431675360051270}
   m_SourcePrefab: {fileID: 100100000, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
 --- !u!4 &6546385053759175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4792729681170163885, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
   m_PrefabInstance: {fileID: 4797586666521845354}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1079351043955891697 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+  m_PrefabInstance: {fileID: 4797586666521845354}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7201431675360051270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1079351043955891697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 0
+  levelManager: {fileID: 0}
 --- !u!1001 &6138986947190320018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1986,10 +2064,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fffeecac7bff79042be00ce8dc78493f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementHorizontal
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   rangeLeft: 0
   rangeRight: 10
   speed: 5
-  startMoveRight: 1
+  startOffset: 0
 --- !u!61 &2136500400099785899 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 5229892826860656441, guid: 578a80249f8849e4fbfcaeadbf6a0755, type: 3}
@@ -2273,10 +2354,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28762a021266514469716f0feb17437e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementVertical
-  rangeDown: 2.25
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   rangeUp: 0
+  rangeDown: 2.25
   speed: 3
-  startMoveUp: 0
+  startOffset: 0
 --- !u!61 &8454556722147478954 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 3196459298225019033, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}

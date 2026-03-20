@@ -85,6 +85,11 @@ public class LifeAndDeathSystem : MonoBehaviour
     {
         respawnPos = CheckPoint.respawnPos;
 
+        if (CheckPoint.isFinal)
+        {
+            CheckPoint.levelManager.shouldChangeLevel = true;
+        }
+
         Debug.Log("Nouveau point de respawn enregistré : " + respawnPos);
     }
 }

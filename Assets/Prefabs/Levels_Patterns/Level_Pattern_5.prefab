@@ -8648,6 +8648,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8fda81fdbd9aab44b218f96e2e13ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   initialSpeed: 5
   accelFactor: 1.2
   timeStop: 1.5
@@ -10499,6 +10502,7 @@ GameObject:
   - component: {fileID: 5734053425663944476}
   - component: {fileID: 3586924934828949607}
   - component: {fileID: 6301430831740908497}
+  - component: {fileID: 5375674462754868377}
   m_Layer: 3
   m_Name: 4_BlocksLine (1)
   m_TagString: Platform
@@ -10641,6 +10645,24 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 4719370935647243306}
+--- !u!114 &5375674462754868377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4719370935647243306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 1
+  levelManager: {fileID: 0}
 --- !u!1 &4758821089256514948
 GameObject:
   m_ObjectHideFlags: 0
@@ -11836,6 +11858,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8fda81fdbd9aab44b218f96e2e13ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   initialSpeed: 5
   accelFactor: 1.2
   timeStop: 1.5
@@ -14357,6 +14382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1076015790035795021}
+  - component: {fileID: 1561329454818010995}
   m_Layer: 0
   m_Name: Level_Pattern_5
   m_TagString: Untagged
@@ -14393,6 +14419,22 @@ Transform:
   - {fileID: 5734053425663944476}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1561329454818010995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6281323970358820112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df215287291f384bb991fcbf34dfc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  startingPlatform: {fileID: 7741835958322882299}
+  endingPlatform: {fileID: 4719370935647243306}
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
 --- !u!1 &6338852459588923088
 GameObject:
   m_ObjectHideFlags: 0
@@ -14895,6 +14937,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8fda81fdbd9aab44b218f96e2e13ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   initialSpeed: 5
   accelFactor: 1.2
   timeStop: 1.5
@@ -15982,6 +16027,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8fda81fdbd9aab44b218f96e2e13ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   initialSpeed: 5
   accelFactor: 1.2
   timeStop: 1.5
@@ -16643,6 +16691,7 @@ GameObject:
   - component: {fileID: 7322121958398578125}
   - component: {fileID: 2002207568849038006}
   - component: {fileID: 9042447268937767168}
+  - component: {fileID: 3333095100229505262}
   m_Layer: 3
   m_Name: 4_BlocksLine
   m_TagString: Platform
@@ -16785,6 +16834,24 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 7741835958322882299}
+--- !u!114 &3333095100229505262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7741835958322882299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 0
+  levelManager: {fileID: 0}
 --- !u!1 &7919147685795830467
 GameObject:
   m_ObjectHideFlags: 0

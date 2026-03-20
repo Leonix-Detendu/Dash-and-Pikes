@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5729680420788815309}
+  - component: {fileID: 108644969883487529}
   m_Layer: 0
   m_Name: Level_Pattern_4
   m_TagString: Untagged
@@ -40,6 +41,22 @@ Transform:
   - {fileID: 2063554876698625746}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &108644969883487529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6182291477414500047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df215287291f384bb991fcbf34dfc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  startingPlatform: {fileID: 1789803209679695784}
+  endingPlatform: {fileID: 1319231242895666660}
+  startPos: {fileID: 0}
+  endPos: {fileID: 0}
 --- !u!1001 &2903390080083746057
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -382,6 +399,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8fda81fdbd9aab44b218f96e2e13ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MechanicPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
   initialSpeed: 5
   accelFactor: 1.1
   timeStop: 1
@@ -922,13 +942,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 223054431447052714}
   m_SourcePrefab: {fileID: 100100000, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
 --- !u!4 &1601954769454154910 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4792729681170163885, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
   m_PrefabInstance: {fileID: 6104764674770775091}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1789803209679695784 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+  m_PrefabInstance: {fileID: 6104764674770775091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &223054431447052714
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789803209679695784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 0
+  levelManager: {fileID: 0}
 --- !u!1001 &6306303570004488792
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1336,8 +1382,34 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4118989426492521529}
   m_SourcePrefab: {fileID: 100100000, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+--- !u!1 &1319231242895666660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5507572120476926875, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
+  m_PrefabInstance: {fileID: 6782432560853806719}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4118989426492521529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1319231242895666660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f07e374bd2375a40891f55e0653d067, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CheckPointPlatforms
+  takeInertia: 0
+  inertiaSpeedMaxX: 0
+  inertiaSpeedMaxY: 0
+  respawnPos: {x: 0, y: 0}
+  isFinal: 1
+  levelManager: {fileID: 0}
 --- !u!4 &2063554876698625746 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4792729681170163885, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
