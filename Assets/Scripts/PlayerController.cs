@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
-        isGrounded = groundCollider != null;
+        isGrounded = groundCollider != null && !groundCollider.isTrigger;
 
         if (isGrounded) isJumping = false;
 

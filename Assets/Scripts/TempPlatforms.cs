@@ -1,22 +1,28 @@
 using System.Collections;
 using UnityEngine;
+
 public class TempPlatforms : MonoBehaviour
 {
     private bool shouldDisappear = true;
     public float disappearDelay;
     public float reappearDelay;
+
     private PlayerController playerControllerScript;
     private SpriteRenderer[] childrenRenderers;
     private BoxCollider2D[] childrenColliders2D;
     private CompositeCollider2D platformCollider;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Ajout d'un filtre pour vérifier les collisions
+    private ContactFilter2D contactFilter;
+
     void Start()
     {
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         childrenRenderers = GetComponentsInChildren<SpriteRenderer>();
         platformCollider = GetComponent<CompositeCollider2D>();
         childrenColliders2D = GetComponentsInChildren<BoxCollider2D>();
+
+        contactFilter = ContactFilter2D.noFilter;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -30,33 +36,74 @@ public class TempPlatforms : MonoBehaviour
 
     IEnumerator DisappearRoutine()
     {
-        
-        // mettre l'animation de disparition plus tard, je me contente pour le moment de faire disparaitre la plateforme 
+        // 1. Délai avant disparition
         yield return new WaitForSeconds(disappearDelay);
 
-        foreach ( SpriteRenderer childRenderer in childrenRenderers)
+        // 2. On cache le visuel
+        foreach (SpriteRenderer childRenderer in childrenRenderers)
         {
-            childRenderer.enabled = false;    
-        }
-        if (platformCollider != null) platformCollider.enabled = false;
-        foreach ( BoxCollider2D childCollider in childrenColliders2D)
-        {
-            childCollider.enabled = false;
+            childRenderer.enabled = false;
         }
 
+        // 3. Au lieu de désactiver le collider, on le passe en Trigger (Fantôme)
+        SetCollidersTriggerState(true);
+
+        // 4. Délai avant réapparition
         yield return new WaitForSeconds(reappearDelay);
 
-        // mettre l'animation de réapparition plus tard, pour l'instant je la fais réapparaitre brutalement 
-        foreach ( SpriteRenderer childRenderer in childrenRenderers)
+        // 5. On réactive le visuel (le joueur voit la plateforme réapparaître)
+        foreach (SpriteRenderer childRenderer in childrenRenderers)
         {
             childRenderer.enabled = true;
         }
-        if ( platformCollider != null ) platformCollider.enabled = true;
-        foreach (BoxCollider2D childCollider in childrenColliders2D)
-        {
-            childCollider.enabled = true;
-        }
+
+        // 6. LA MAGIE EST ICI : La coroutine se met en pause et attend que la zone soit vide !
+        yield return new WaitUntil(() => !IsSomethingInside());
+
+        // 7. La voie est libre, on redonne sa solidité à la plateforme
+        SetCollidersTriggerState(false);
 
         shouldDisappear = true;
+    }
+
+    // --- MÉTHODES UTILITAIRES ---
+
+    private void SetCollidersTriggerState(bool isTrigger)
+    {
+        // Comme on l'a vu, si on a un Composite, c'est lui le "maître"
+        if (platformCollider != null)
+        {
+            platformCollider.isTrigger = isTrigger;
+        }
+        else
+        {
+            // Sécurité au cas où le Composite est retiré un jour
+            foreach (BoxCollider2D childCollider in childrenColliders2D)
+            {
+                childCollider.isTrigger = isTrigger;
+            }
+        }
+    }
+
+    private bool IsSomethingInside()
+    {
+        Collider2D[] results = new Collider2D[1];
+
+        if (platformCollider != null)
+        {
+            // Vérifie si un objet physique touche le CompositeCollider
+            return platformCollider.Overlap(contactFilter, results) > 0;
+        }
+
+        // Sécurité si pas de CompositeCollider
+        foreach (BoxCollider2D childCollider in childrenColliders2D)
+        {
+            if (childCollider.Overlap(contactFilter, results) > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

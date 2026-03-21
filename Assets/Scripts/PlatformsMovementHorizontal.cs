@@ -17,7 +17,7 @@ public class PlatformsMovementHorizontal : PlatformsBase
     protected override void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        defaultXPosition = transform.position.x;
+        defaultXPosition = transform.position.x; 
         totalRange = rangeRight + rangeLeft;
         offset = startOffset * totalRange;
     }
