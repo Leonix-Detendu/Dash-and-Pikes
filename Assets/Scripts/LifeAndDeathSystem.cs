@@ -74,7 +74,7 @@ public class LifeAndDeathSystem : MonoBehaviour
         rb.position = respawnPos;
         rb.linearVelocity = Vector2.zero;
 
-        if (healthBar == 0)
+        if (healthBar <= 0)
         {
             gameOver = true;
             Debug.Log("game over");

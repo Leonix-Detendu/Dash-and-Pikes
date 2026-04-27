@@ -6,15 +6,14 @@ public class LevelManager : MonoBehaviour
     public GameObject firstLevel;
     public bool shouldChangeLevel;
     private GameObject currentLevel;
-    private void Start()
-    {
-        firstLevel = Instantiate(firstLevel, Vector3.zero, firstLevel.transform.rotation);
 
+    private void Start()
+    { 
         LevelData firstLevelData = firstLevel.GetComponent<LevelData>();
 
         Vector3 startLocalPos = firstLevelData.startPos.localPosition;
 
-        firstLevel.transform.position = -startLocalPos;
+        firstLevel = Instantiate(firstLevel, -startLocalPos, firstLevel.transform.rotation);
 
         currentLevel = firstLevel;
     }
@@ -31,17 +30,17 @@ public class LevelManager : MonoBehaviour
     private void GenerateNewLevel()
     {
         int indexOfNextLevel = Random.Range(0, levelPatterns.Length);
-        GameObject nextLevel = levelPatterns[indexOfNextLevel];
+        GameObject nextLevelPrefab = levelPatterns[indexOfNextLevel];
 
         LevelData currentLevelData = currentLevel.GetComponent<LevelData>();
         Vector3 currentFinalPos = currentLevelData.endPos.position;
 
-        nextLevel = Instantiate(nextLevel, Vector3.zero, nextLevel.transform.rotation);
-        
-        LevelData nextLevelData = nextLevel.GetComponent<LevelData>();
+        LevelData nextLevelData = nextLevelPrefab.GetComponent<LevelData>();
         Vector3 nextStartLocalPos = nextLevelData.startPos.localPosition;
 
-        nextLevel.transform.position = currentFinalPos - nextStartLocalPos;
+        Vector3 spawnPosition = currentFinalPos - nextStartLocalPos;
+
+        GameObject nextLevel = Instantiate(nextLevelPrefab, spawnPosition, nextLevelPrefab.transform.rotation);
 
         Destroy(currentLevel);
         currentLevel = nextLevel;

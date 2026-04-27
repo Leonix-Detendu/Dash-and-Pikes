@@ -721,7 +721,7 @@ GameObject:
   - component: {fileID: 6366911285199329637}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (1)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6630,7 +6630,7 @@ GameObject:
   - component: {fileID: 8584213787488162527}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7247,7 +7247,7 @@ GameObject:
   - component: {fileID: 7728327325760940986}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (2)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7530,7 +7530,7 @@ GameObject:
   - component: {fileID: 7674854956026391687}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (2)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7871,7 +7871,7 @@ GameObject:
   - component: {fileID: 7946206265834909807}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (2)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12797,7 +12797,7 @@ GameObject:
   - component: {fileID: 846877933612967786}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (1)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13287,7 +13287,7 @@ GameObject:
   - component: {fileID: 721334417148846167}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (1)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14256,7 +14256,7 @@ GameObject:
   - component: {fileID: 1064721157973900479}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (1)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14416,7 +14416,7 @@ GameObject:
   - component: {fileID: 1561329454818010995}
   m_Layer: 0
   m_Name: Level_Pattern_5
-  m_TagString: DeathObject
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15481,7 +15481,7 @@ GameObject:
   - component: {fileID: 4097130156090037685}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block (2)
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17327,7 +17327,7 @@ GameObject:
   - component: {fileID: 3363767452163080462}
   m_Layer: 0
   m_Name: Dead Zone
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19026,7 +19026,7 @@ GameObject:
   - component: {fileID: 2430877966077867781}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19699,7 +19699,7 @@ GameObject:
   - component: {fileID: 2699944489667980269}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20613,7 +20613,7 @@ GameObject:
   - component: {fileID: 2646469648179752144}
   m_Layer: 0
   m_Name: Pics_Chain_1-Block
-  m_TagString: Untagged
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

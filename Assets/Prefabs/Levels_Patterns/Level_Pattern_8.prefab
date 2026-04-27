@@ -107,7 +107,7 @@ GameObject:
   - component: {fileID: 6936590925936722868}
   m_Layer: 0
   m_Name: Dead Zone
-  m_TagString: DeathObject
+  m_TagString: DamageEntity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
