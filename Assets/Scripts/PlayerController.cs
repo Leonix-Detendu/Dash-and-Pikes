@@ -35,15 +35,14 @@ public class PlayerController : MonoBehaviour
     public float coyoteTime;
     private float jumpBufferTimer;
     public float jBMaxTime;
-    private float inertiaJumpTimer;
-    public float inertiaJumpMaxTime;
-    private bool inertiaChange;
-    private Vector2 platformBoost;
-    
 
     [Header("Parametres de plateforme sur laquelle se tient le joueur")]
     public PlatformsBase currentPBase;
     private Vector2 lastPlatformVelocity;
+    private bool pBaseHasChanged;
+
+    public float maxVelocityY;
+    public float maxVelocityX;
 
     void Start()
     {
@@ -52,8 +51,8 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = defaultGS;
         isDashing = false;
         dashStack = 1;
-        platformBoost = Vector2.zero;
     }
+
     void Update()
     {
         // Récupère les entrées de déplacement horizontal
@@ -94,34 +93,35 @@ public class PlayerController : MonoBehaviour
 
         if (isGrounded) isJumping = false;
 
-        PlatformsBase newPlatform = null;
+        PlatformsBase newPBase = null;
 
-        if (isGrounded && groundCollider.CompareTag("Platform"))
+        pBaseHasChanged = false;
+
+        if ( groundCollider != null ) newPBase = groundCollider.GetComponent<PlatformsBase>();
+
+        if ( newPBase != null )
         {
-            newPlatform = groundCollider.GetComponent<PlatformsBase>();
+            if (newPBase != currentPBase)
+            {
+                currentPBase = newPBase;
+                lastPlatformVelocity = Vector2.zero;
+                pBaseHasChanged = true;
+            }
         }
-
-        if (newPlatform != null && currentPBase != newPlatform)
-        {
-            currentPBase = newPlatform;
-            lastPlatformVelocity = currentPBase.platformVelocity;
-        }
-
-        else if (newPlatform == null)
+        else
         {
             currentPBase = null;
-            lastPlatformVelocity = Vector2.zero;
         }
 
         Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
 
         if (isGrounded && currentPBase != null)
         {
-            Vector2 platformVelocityChange = currentPlatformVelocity - lastPlatformVelocity;
+            Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
 
-            if (platformVelocityChange.sqrMagnitude > 0.001f)
+            if (velocityChange.sqrMagnitude > 0.001f && !pBaseHasChanged)
             {
-                rb.linearVelocity += platformVelocityChange;
+                rb.linearVelocity += velocityChange; 
             }
         }
 
@@ -129,15 +129,19 @@ public class PlayerController : MonoBehaviour
 
         if (!isDashing)
         {
-
             Run();
-
             GroundFriction();
-
             Jump();
-
             GravityManagement();
-            
+
+            if ( Mathf.Abs(rb.linearVelocity.x) > maxVelocityX )
+            {
+                rb.linearVelocity = new Vector2( maxVelocityX * Mathf.Sign(rb.linearVelocity.x), rb.linearVelocity.y);
+            }
+            if ( rb.linearVelocityY > maxVelocityY ) 
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxVelocityY);
+            }
         }
     }
 
@@ -199,87 +203,22 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        // Gestion de la mémoire de l'inertie de la plateforme et du timer avant expiration de l'inertie, si inertie prise en compte
-        if ( currentPBase?.takeInertia == true)
-        {
-            Vector2 currentVel = currentPBase.platformVelocity;
 
-            bool changedDirX = (currentVel.x > 0.1f && platformBoost.x < -0.1f) || (currentVel.x < -0.1f && platformBoost.x > 0.1f);
-
-            bool changedDirY = (currentVel.y > 0.1f && platformBoost.y < -0.1f) || (currentVel.y < -0.1f && platformBoost.y > 0.1f);
-
-            bool isStopped = currentVel.sqrMagnitude < 0.01f;
-
-            if (!isStopped && !changedDirX && !changedDirY)
-            {
-                inertiaJumpTimer = inertiaJumpMaxTime;
-
-                platformBoost = currentVel;
-            }
-            else
-            {
-                inertiaJumpTimer -= Time.fixedDeltaTime;
-
-                if (inertiaJumpTimer <= 0)
-                {
-                    platformBoost = currentVel;
-
-                    if (!isStopped) inertiaJumpTimer = inertiaJumpMaxTime;
-                }
-            }
-        }
-        else
-        {
-            inertiaJumpTimer -= Time.fixedDeltaTime;
-
-            if (inertiaJumpTimer <= 0) platformBoost = Vector2.zero;
-        }
-
-        // Action de saut avec prise en compte de l'inertie, selon si le joueur le veut ou non
+        // Action de saut
         if (jumpBufferTimer > 0 && lastGroundedTimer > 0 && !isJumping)
         {
             rb.gravityScale = defaultGS;
 
-            if (moveInput != 0 && Mathf.Sign(moveInput) != Mathf.Sign(platformBoost.x) && Mathf.Abs(platformBoost.x) > 0.1f)
-            {
-                platformBoost.x = 0f;
-            }
-
-            if (inertiaJumpTimer < 0)
-            {
-                platformBoost = Vector2.zero;
-            }
-
-            float limitY = currentPBase?.inertiaSpeedMaxY ?? 0f;
-            float limitX = currentPBase?.inertiaSpeedMaxX ?? 0f;
-
-            float newBoostY = platformBoost.y > 0 ? platformBoost.y : 0f;
-
-            if (limitY > 0f && newBoostY > limitY)
-            {
-                newBoostY = limitY;
-            }
-
-            float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0f;
+            float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0;
             float purePlayerSpeedX = rb.linearVelocity.x - platformVelX;
 
-            if (limitX > 0f)
-            {
-                platformBoost.x = Mathf.Clamp(platformBoost.x, -limitX, limitX);
-            }
-
-            rb.linearVelocity = new Vector2(purePlayerSpeedX + platformBoost.x, newBoostY);
+            rb.linearVelocity = new Vector2(purePlayerSpeedX, rb.linearVelocityY);
 
             rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
 
-
             isJumping = true;
-
             lastGroundedTimer = 0;
-
             jumpBufferTimer = 0;
-
-            platformBoost = Vector2.zero;
         }
     }
 
@@ -300,7 +239,7 @@ public class PlayerController : MonoBehaviour
         if (rb.linearVelocity.y < 0f) rb.gravityScale = fallMultiplier;
 
         if (isGrounded) rb.gravityScale = defaultGS;
-        
+
         if (rb.linearVelocity.y < -maxFallSpeed)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);

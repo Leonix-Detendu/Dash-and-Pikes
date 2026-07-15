@@ -48,9 +48,7 @@ public class MechanicPlatforms : PlatformsBase
         // On exécute le mouvement ICI pour être parfaitement synchro avec le joueur
         if (currentState == PlatformState.MovingToTarget)
         {
-            takeInertia = true;
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, targetPos, actualSpeed * Time.fixedDeltaTime);
-            platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             // Vérification de l'arrivée
@@ -68,10 +66,7 @@ public class MechanicPlatforms : PlatformsBase
         }
         else if (currentState == PlatformState.Returning)
         {
-            // Le voyage de retour (à vitesse constante pour l'exemple)
-            takeInertia = false;
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, initialPos, actualSpeed * Time.fixedDeltaTime);
-            platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             if (Vector2.Distance(platformRb.position, initialPos) <= 0.001f)
@@ -83,7 +78,6 @@ public class MechanicPlatforms : PlatformsBase
         else
         {
             // Si on est en "Idle" ou en "Paused", on force la vélocité à 0
-            takeInertia = false;
             platformVelocity = Vector2.zero;
         }
     }
