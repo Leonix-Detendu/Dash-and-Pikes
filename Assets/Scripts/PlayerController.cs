@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -39,10 +40,12 @@ public class PlayerController : MonoBehaviour
     [Header("Parametres de plateforme sur laquelle se tient le joueur")]
     public PlatformsBase currentPBase;
     private Vector2 lastPlatformVelocity;
-    private bool pBaseHasChanged;
 
     public float maxVelocityY;
     public float maxVelocityX;
+
+    // Debug 
+    private bool shouldDebug = false;
 
     void Start()
     {
@@ -83,6 +86,11 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine(dashRoutine());
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            shouldDebug = true;
+        }
     }
 
     void FixedUpdate()
@@ -95,34 +103,41 @@ public class PlayerController : MonoBehaviour
 
         PlatformsBase newPBase = null;
 
-        pBaseHasChanged = false;
+        if (groundCollider != null) newPBase = groundCollider.GetComponent<PlatformsBase>();
 
-        if ( groundCollider != null ) newPBase = groundCollider.GetComponent<PlatformsBase>();
-
-        if ( newPBase != null )
+        if (newPBase != null)
         {
             if (newPBase != currentPBase)
             {
                 currentPBase = newPBase;
                 lastPlatformVelocity = Vector2.zero;
-                pBaseHasChanged = true;
             }
         }
         else
         {
             currentPBase = null;
+            lastPlatformVelocity = Vector2.zero;
         }
 
         Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
 
-        if (isGrounded && currentPBase != null)
-        {
+        if ( isGrounded && currentPBase != null ) 
+        { 
             Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
 
-            if (velocityChange.sqrMagnitude > 0.001f && !pBaseHasChanged)
+            if (velocityChange.sqrMagnitude > 0.001f)
             {
-                rb.linearVelocity += velocityChange; 
+                rb.linearVelocity += velocityChange;
             }
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentPlatformVelocity.y);
+
+            if (shouldDebug)
+            {
+                Debug.Log(currentPlatformVelocity);
+                shouldDebug = false;
+            }
+
         }
 
         lastPlatformVelocity = currentPlatformVelocity;
@@ -212,10 +227,17 @@ public class PlayerController : MonoBehaviour
             float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0;
             float purePlayerSpeedX = rb.linearVelocity.x - platformVelX;
 
-            rb.linearVelocity = new Vector2(purePlayerSpeedX, rb.linearVelocityY);
+            rb.linearVelocity = new Vector2(purePlayerSpeedX, 0);
 
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-
+            if (currentPBase != null && currentPBase.canBoost && currentPBase.shouldBoost)
+            {
+                rb.AddForce(currentPBase.boostVector, ForceMode2D.Impulse);
+            }
+            else
+            {
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            }
+                
             isJumping = true;
             lastGroundedTimer = 0;
             jumpBufferTimer = 0;

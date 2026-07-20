@@ -20,9 +20,19 @@ public class MechanicPlatforms : PlatformsBase
     private enum PlatformState { Idle, MovingToTarget, Paused, Returning }
     private PlatformState currentState = PlatformState.Idle;
 
+    [SerializeField] private float delayToBoost;
+    private float delayRemaining;
+
     protected override void Start()
     {
+        canBoost = true;
 
+        angleBoost *= Mathf.Deg2Rad;
+
+        boostVector = new Vector2(Mathf.Cos(angleBoost), Mathf.Sin(angleBoost)).normalized * superBoost;
+
+        delayRemaining = delayToBoost;
+      
         playerMouvsScript = GameObject.Find("Player").GetComponent<PlayerController>();
         platformRb = GetComponent<Rigidbody2D>();
 
@@ -41,6 +51,23 @@ public class MechanicPlatforms : PlatformsBase
             currentState = PlatformState.MovingToTarget;
             actualSpeed = initialSpeed;
         }
+        if (currentState == PlatformState.Paused)
+        {
+            delayRemaining -= Time.deltaTime;
+            if (delayRemaining > 0)
+            {
+                shouldBoost = true;
+            }
+            else
+            {
+                shouldBoost = false;
+            }
+        }
+        else
+        {
+            shouldBoost = false;
+            delayRemaining = delayToBoost;
+        }
     }
 
     protected override void FixedUpdate()
@@ -49,6 +76,7 @@ public class MechanicPlatforms : PlatformsBase
         if (currentState == PlatformState.MovingToTarget)
         {
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, targetPos, actualSpeed * Time.fixedDeltaTime);
+            platformVelocity = (nextPos - targetPos) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             // Vérification de l'arrivée
@@ -67,6 +95,7 @@ public class MechanicPlatforms : PlatformsBase
         else if (currentState == PlatformState.Returning)
         {
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, initialPos, actualSpeed * Time.fixedDeltaTime);
+            platformVelocity = (nextPos - targetPos) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             if (Vector2.Distance(platformRb.position, initialPos) <= 0.001f)
