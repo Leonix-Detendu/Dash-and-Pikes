@@ -29,6 +29,8 @@ public class MechanicPlatforms : PlatformsBase
 
         angleBoost *= Mathf.Deg2Rad;
 
+        angleBoost %= 2 * Mathf.PI;
+
         boostVector = new Vector2(Mathf.Cos(angleBoost), Mathf.Sin(angleBoost)).normalized * superBoost;
 
         delayRemaining = delayToBoost;
@@ -76,7 +78,7 @@ public class MechanicPlatforms : PlatformsBase
         if (currentState == PlatformState.MovingToTarget)
         {
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, targetPos, actualSpeed * Time.fixedDeltaTime);
-            platformVelocity = (nextPos - targetPos) / Time.fixedDeltaTime;
+            platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             // Vérification de l'arrivée
@@ -95,7 +97,7 @@ public class MechanicPlatforms : PlatformsBase
         else if (currentState == PlatformState.Returning)
         {
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, initialPos, actualSpeed * Time.fixedDeltaTime);
-            platformVelocity = (nextPos - targetPos) / Time.fixedDeltaTime;
+            platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             if (Vector2.Distance(platformRb.position, initialPos) <= 0.001f)

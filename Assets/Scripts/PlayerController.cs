@@ -231,7 +231,18 @@ public class PlayerController : MonoBehaviour
 
             if (currentPBase != null && currentPBase.canBoost && currentPBase.shouldBoost)
             {
-                rb.AddForce(currentPBase.boostVector, ForceMode2D.Impulse);
+                bool shouldBoostOnXAxis = (currentPBase.angleBoost <= Mathf.Abs(Mathf.PI / 2) && moveInput > 0) || (currentPBase.angleBoost >= Mathf.Abs(Mathf.PI / 2) && moveInput < 0 );
+                if ( shouldBoostOnXAxis )
+                {
+                    rb.AddForce(currentPBase.boostVector, ForceMode2D.Impulse);
+                    Debug.Log("BoostTotal : " + currentPBase.boostVector);
+                }
+                else
+                {
+                    Vector2 boostVectorOnlyOnYAxis = new Vector2(0, 1) * currentPBase.boostVector.y;
+                    rb.AddForce(boostVectorOnlyOnYAxis, ForceMode2D.Impulse);
+                    Debug.Log("Boost sur Y uniquement : " + boostVectorOnlyOnYAxis);
+                }
             }
             else
             {
