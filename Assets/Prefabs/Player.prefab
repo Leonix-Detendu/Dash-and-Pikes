@@ -264,8 +264,9 @@ MonoBehaviour:
   maxFallSpeed: 20
   coyoteTime: 0.1
   jBMaxTime: 0.3
-  inertiaJumpMaxTime: 0.3
   currentPBase: {fileID: 0}
+  maxVelocityY: 50
+  maxVelocityX: 50
 --- !u!114 &3848247612004862396
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -29,7 +29,19 @@ public class TempPlatforms : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (shouldDisappear) StartCoroutine(DisappearRoutine());
+            StartCoroutine(IsPlayerGroundedRoutine());
+        }
+    }
+
+    IEnumerator IsPlayerGroundedRoutine()
+    {
+        yield return new WaitForFixedUpdate();
+
+        yield return new WaitForFixedUpdate();
+
+        if (shouldDisappear && playerControllerScript.isGrounded)
+        {
+            StartCoroutine(DisappearRoutine());
             shouldDisappear = false;
         }
     }

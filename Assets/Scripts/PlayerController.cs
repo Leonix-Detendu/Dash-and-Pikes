@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using Unity.VisualScripting;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -87,6 +86,7 @@ public class PlayerController : MonoBehaviour
             StartCoroutine(dashRoutine());
         }
 
+        // Commande de debug
         if (Input.GetKeyDown(KeyCode.B))
         {
             shouldDebug = true;
@@ -98,6 +98,12 @@ public class PlayerController : MonoBehaviour
         Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
         isGrounded = groundCollider != null && !groundCollider.isTrigger;
+
+        if (shouldDebug)
+        {
+            Debug.Log(isGrounded);
+            shouldDebug = false;
+        }
 
         if (isGrounded) isJumping = false;
 
@@ -131,12 +137,6 @@ public class PlayerController : MonoBehaviour
             }
 
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentPlatformVelocity.y);
-
-            if (shouldDebug)
-            {
-                Debug.Log(currentPlatformVelocity);
-                shouldDebug = false;
-            }
 
         }
 
@@ -231,7 +231,7 @@ public class PlayerController : MonoBehaviour
 
             if (currentPBase != null && currentPBase.canBoost && currentPBase.shouldBoost)
             {
-                bool shouldBoostOnXAxis = (currentPBase.angleBoost <= Mathf.Abs(Mathf.PI / 2) && moveInput > 0) || (currentPBase.angleBoost >= Mathf.Abs(Mathf.PI / 2) && moveInput < 0 );
+                bool shouldBoostOnXAxis = (currentPBase.angleBoost <= Mathf.Abs(Mathf.PI / 2) && moveInput >= 0) || (currentPBase.angleBoost >= Mathf.Abs(Mathf.PI / 2) && moveInput <= 0 );
                 if ( shouldBoostOnXAxis )
                 {
                     rb.AddForce(currentPBase.boostVector, ForceMode2D.Impulse);
