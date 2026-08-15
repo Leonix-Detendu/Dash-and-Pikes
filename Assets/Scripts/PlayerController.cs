@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
     public float maxVelocityY;
     public float maxVelocityX;
 
+    public Animator animator;
+
     // Debug 
     private bool shouldDebug = false;
 
@@ -53,10 +56,12 @@ public class PlayerController : MonoBehaviour
         rb.gravityScale = defaultGS;
         isDashing = false;
         dashStack = 1;
+        animator = GetComponent<Animator>();
     }
 
     void Update()
     {
+        
         // Récupère les entrées de déplacement horizontal
         moveInput = Input.GetAxisRaw("Horizontal");
 
@@ -98,6 +103,10 @@ public class PlayerController : MonoBehaviour
         Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
         isGrounded = groundCollider != null && !groundCollider.isTrigger;
+
+        animator.SetBool("isGrounded", isGrounded);
+
+        TurnCharacter(isGrounded);
 
         if (shouldDebug)
         {
@@ -144,7 +153,7 @@ public class PlayerController : MonoBehaviour
 
         if (!isDashing)
         {
-            Run();
+            animator.SetFloat("speed", Mathf.Abs(Run()));
             GroundFriction();
             Jump();
             GravityManagement();
@@ -160,11 +169,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void TurnCharacter(bool canTurn)
+    {
+        if (canTurn)
+        {
+            if (moveInput > 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            if (moveInput < 0)
+            {
+                transform.rotation = Quaternion.Euler(0, 180, 0);
+            }
+        }
+    }
+
     // Coroutine réalisant l'action de dash
     IEnumerator dashRoutine()
     {
         isJumping = false;
         rb.gravityScale = defaultGS;
+
+        TurnCharacter(true);
+        animator.SetBool("isDashing", true);
+        animator.SetBool("isGrounded", false);
 
         // Action de Dash
         Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
@@ -184,9 +212,10 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity *= 0.5f;
         rb.gravityScale = defaultGS;
         isDashing = false;
+        animator.SetBool("isDashing", false);
     }
 
-    private void Run()
+    private float Run()
     {
         float platformVelocityX = (currentPBase == null) ? 0f : currentPBase.platformVelocity.x;
 
@@ -199,6 +228,8 @@ public class PlayerController : MonoBehaviour
         float movement = Mathf.Pow(Mathf.Abs(velocityDiff) * accelRate, velPower) * Mathf.Sign(velocityDiff);
 
         rb.AddForce(movement * Vector2.right);
+
+        return rb.linearVelocityX - platformVelocityX;
     }
 
     private void GroundFriction()
@@ -222,6 +253,7 @@ public class PlayerController : MonoBehaviour
         // Action de saut
         if (jumpBufferTimer > 0 && lastGroundedTimer > 0 && !isJumping)
         {
+            animator.SetTrigger("Jump");
             rb.gravityScale = defaultGS;
 
             float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0;

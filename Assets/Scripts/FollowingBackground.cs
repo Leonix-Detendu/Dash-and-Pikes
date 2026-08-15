@@ -38,14 +38,12 @@ public class FollowingBackground : MonoBehaviour
         {
             ShiftTilesX(tileSizeX * nbTilesOnX, true); // On décale la colonne de gauche vers la droite
             gridCenter.x += tileSizeX;         // On met à jour le centre virtuel
-            Debug.Log(gridCenter);
         }
         // Si le joueur va trop à GAUCHE
         else if (playerPos.x - gridCenter.x < -tileSizeX)
         {
             ShiftTilesX(-tileSizeX * nbTilesOnX, false);
             gridCenter.x -= tileSizeX;
-            Debug.Log(gridCenter);
         }
 
         // Si le joueur va trop en HAUT
@@ -53,32 +51,32 @@ public class FollowingBackground : MonoBehaviour
         {
             ShiftTilesY(tileSizeY * nbTilesOnY, true);
             gridCenter.y += tileSizeY;
-            Debug.Log(gridCenter);
         }
         // Si le joueur va trop en BAS
         else if (playerPos.y - gridCenter.y <= -tileSizeY)
         {
             ShiftTilesY(-tileSizeY * nbTilesOnY, false);
             gridCenter.y -= tileSizeY;
-            Debug.Log(gridCenter);
         }
     }
 
     // Déplace la colonne appropriée sur l'axe X
     private void ShiftTilesX(float shiftAmount, bool playerMovingRight)
     {
+        float margin = 0.1f;
+
         for (int i = 0; i < tiles.Length; i++)
         {
             Vector3 pos = tiles[i].transform.position;
 
             // Si le joueur va à droite, on cherche les tuiles qui sont restées tout à gauche
-            if (playerMovingRight && pos.x <= gridCenter.x - tileSizeX)
+            if (playerMovingRight && pos.x <= gridCenter.x - tileSizeX + margin)
             {
                 pos.x += shiftAmount;
                 tiles[i].transform.position = pos;
             }
             // Si le joueur va à gauche, on cherche les tuiles qui sont restées tout à droite
-            else if (!playerMovingRight && pos.x >= gridCenter.x + tileSizeX)
+            else if (!playerMovingRight && pos.x >= gridCenter.x + tileSizeX - margin)
             {
                 pos.x += shiftAmount;
                 tiles[i].transform.position = pos;
@@ -89,16 +87,18 @@ public class FollowingBackground : MonoBehaviour
     // Déplace la ligne appropriée sur l'axe Y
     private void ShiftTilesY(float shiftAmount, bool playerMovingUp)
     {
+        float margin = 0.1f;
+
         for (int i = 0; i < tiles.Length; i++)
         {
             Vector3 pos = tiles[i].transform.position;
 
-            if (playerMovingUp && pos.y <= gridCenter.y - tileSizeY)
+            if (playerMovingUp && pos.y <= gridCenter.y - tileSizeY + margin)
             {
                 pos.y += shiftAmount;
                 tiles[i].transform.position = pos;
             }
-            else if (!playerMovingUp && pos.y >= gridCenter.y + tileSizeY)
+            else if (!playerMovingUp && pos.y >= gridCenter.y + tileSizeY - margin)
             {
                 pos.y += shiftAmount;
                 tiles[i].transform.position = pos;
