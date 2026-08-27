@@ -30,7 +30,7 @@ public class LevelManager : MonoBehaviour
     private void GenerateNewLevel()
     {
         int indexOfNextLevel = Random.Range(0, levelPatterns.Length);
-        Debug.Log(indexOfNextLevel);
+
         GameObject nextLevelPrefab = levelPatterns[indexOfNextLevel];
 
         LevelData currentLevelData = currentLevel.GetComponent<LevelData>();

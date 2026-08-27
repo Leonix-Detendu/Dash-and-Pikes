@@ -248,7 +248,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 12
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -273,7 +273,7 @@ Transform:
   m_GameObject: {fileID: 1384755997}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -14, y: 8, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -365,6 +365,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3251859469624449792, guid: 2dd68cd75cc27694996a9d4fe096a0fd, type: 3}
+      propertyPath: landingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
+    - target: {fileID: 3848247612004862396, guid: 2dd68cd75cc27694996a9d4fe096a0fd, type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: c458b6714dab015479d507b21fd2cead, type: 3}
     - target: {fileID: 7164242717098745652, guid: 2dd68cd75cc27694996a9d4fe096a0fd, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.23
@@ -469,7 +477,7 @@ PrefabInstance:
     - target: {fileID: 7089410864491001521, guid: 3bd610169fc218c46974c1c65a1a21de, type: 3}
       propertyPath: firstLevel
       value: 
-      objectReference: {fileID: 3444322427912296577, guid: ea65f6740ac1b674b903947fc14d2a3f, type: 3}
+      objectReference: {fileID: 3832734561051898925, guid: 42ccf95796201b04bbae1493d0941c0e, type: 3}
     - target: {fileID: 7089410864491001521, guid: 3bd610169fc218c46974c1c65a1a21de, type: 3}
       propertyPath: 'levelPatterns.Array.data[4]'
       value: 

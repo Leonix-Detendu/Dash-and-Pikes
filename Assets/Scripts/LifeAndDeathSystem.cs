@@ -13,6 +13,9 @@ public class LifeAndDeathSystem : MonoBehaviour
     private bool isImmune;
 
     private Rigidbody2D rb;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip deathSound;
     
     void Start()
     {
@@ -21,6 +24,7 @@ public class LifeAndDeathSystem : MonoBehaviour
         healthBar = initialHealth;
         isImmune = false;
         Debug.Log(healthBar);
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -66,6 +70,9 @@ public class LifeAndDeathSystem : MonoBehaviour
 
     private void TakeDamage()
     {
+
+        audioSource.PlayOneShot(deathSound);
+
         healthBar--;
         isImmune = true;
 

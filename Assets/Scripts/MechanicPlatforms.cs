@@ -23,6 +23,18 @@ public class MechanicPlatforms : PlatformsBase
     [SerializeField] private float delayToBoost;
     private float delayRemaining;
 
+    [Header("Audio")]
+    private AudioSource audioSource;
+
+    [SerializeField] private AudioClip movingSound;
+    [SerializeField] private AudioClip impactSound;
+
+    private bool shouldSound;
+    private float soundDelay;
+    [SerializeField] private float mvToTargetDelay;
+    [SerializeField] private float returningDelay;
+
+
     protected override void Start()
     {
         canBoost = true;
@@ -44,6 +56,10 @@ public class MechanicPlatforms : PlatformsBase
         targetPos = initialPos + (direction * range);
 
         currentState = PlatformState.Idle;
+
+        audioSource = GetComponent<AudioSource>();
+
+        shouldSound = true;
     }
 
     protected override void Update()
@@ -77,6 +93,12 @@ public class MechanicPlatforms : PlatformsBase
         // On exécute le mouvement ICI pour être parfaitement synchro avec le joueur
         if (currentState == PlatformState.MovingToTarget)
         {
+            
+            if (shouldSound)
+            {
+                StartCoroutine(movingSoundRoutine(false));
+            }
+           
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, targetPos, actualSpeed * Time.fixedDeltaTime);
             platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
@@ -84,6 +106,8 @@ public class MechanicPlatforms : PlatformsBase
             // Vérification de l'arrivée
             if (Vector2.Distance(platformRb.position, targetPos) <= 0.001f)
             {
+                audioSource.PlayOneShot(impactSound);
+                shouldSound = true;
                 currentState = PlatformState.Paused;
                 platformRb.position = targetPos; // On la snap parfaitement sur sa cible
                 StartCoroutine(PauseRoutine());
@@ -96,12 +120,18 @@ public class MechanicPlatforms : PlatformsBase
         }
         else if (currentState == PlatformState.Returning)
         {
+            if (shouldSound)
+            {
+                StartCoroutine(movingSoundRoutine(true));
+            }
+
             Vector2 nextPos = Vector2.MoveTowards(platformRb.position, initialPos, actualSpeed * Time.fixedDeltaTime);
             platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
             if (Vector2.Distance(platformRb.position, initialPos) <= 0.001f)
             {
+                shouldSound = true;
                 currentState = PlatformState.Idle;
                 platformRb.position = initialPos;
             }
@@ -119,5 +149,16 @@ public class MechanicPlatforms : PlatformsBase
         yield return new WaitForSeconds(timeStop);
         currentState = PlatformState.Returning;
         actualSpeed = initialSpeed; // On réinitialise la vitesse pour le retour
+    }
+
+    IEnumerator movingSoundRoutine( bool isReturning) 
+    {
+        shouldSound = false;
+        soundDelay = isReturning ? returningDelay : mvToTargetDelay;
+        audioSource.PlayOneShot(movingSound);
+        
+        yield return new WaitForSeconds(soundDelay);
+
+        shouldSound = true;
     }
 }

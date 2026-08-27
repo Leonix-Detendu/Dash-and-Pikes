@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private float moveInput;
     public bool isGrounded;
+    private bool wasGrounded;
 
     [Header("Reglages du saut et de la gravite")]
     private bool isJumping;
@@ -44,7 +45,15 @@ public class PlayerController : MonoBehaviour
     public float maxVelocityY;
     public float maxVelocityX;
 
-    public Animator animator;
+    [HideInInspector] public Animator animator;
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip dashSound;
+    [SerializeField] private AudioClip superJumpSound;
+    [SerializeField] private AudioClip landingSound;
+    private AudioSource audioSource;
+    
 
     // Debug 
     private bool shouldDebug = false;
@@ -57,6 +66,7 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
         dashStack = 1;
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -103,6 +113,13 @@ public class PlayerController : MonoBehaviour
         Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
         isGrounded = groundCollider != null && !groundCollider.isTrigger;
+
+        if (!wasGrounded && isGrounded)
+        {
+            audioSource.PlayOneShot(landingSound, 0.4f);
+        }
+
+        wasGrounded = isGrounded;
 
         animator.SetBool("isGrounded", isGrounded);
 
@@ -194,6 +211,8 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isDashing", true);
         animator.SetBool("isGrounded", false);
 
+        audioSource.PlayOneShot(dashSound);
+
         // Action de Dash
         Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
         if (dashDirection.x == 0 && dashDirection.y == 0)
@@ -254,6 +273,7 @@ public class PlayerController : MonoBehaviour
         if (jumpBufferTimer > 0 && lastGroundedTimer > 0 && !isJumping)
         {
             animator.SetTrigger("Jump");
+
             rb.gravityScale = defaultGS;
 
             float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0;
@@ -263,6 +283,7 @@ public class PlayerController : MonoBehaviour
 
             if (currentPBase != null && currentPBase.canBoost && currentPBase.shouldBoost)
             {
+                audioSource.PlayOneShot(superJumpSound);
                 bool shouldBoostOnXAxis = (currentPBase.angleBoost <= Mathf.Abs(Mathf.PI / 2) && moveInput >= 0) || (currentPBase.angleBoost >= Mathf.Abs(Mathf.PI / 2) && moveInput <= 0 );
                 if ( shouldBoostOnXAxis )
                 {
@@ -278,6 +299,7 @@ public class PlayerController : MonoBehaviour
             }
             else
             {
+                audioSource.PlayOneShot(jumpSound);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
                 
