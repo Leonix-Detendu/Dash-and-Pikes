@@ -5,6 +5,7 @@ public class MechanicPlatforms : PlatformsBase
 {
     [Header("Paramètres de la Plateforme")]
     public float initialSpeed;
+    public float maxSpeed;
     public float accelFactor;
     public float timeStop;
     public float angle;
@@ -115,7 +116,7 @@ public class MechanicPlatforms : PlatformsBase
             else
             {
                 // On accélère seulement si on n'est pas encore arrivé
-                actualSpeed *= accelFactor;
+                actualSpeed = Mathf.Min( maxSpeed, actualSpeed * accelFactor);
             }
         }
         else if (currentState == PlatformState.Returning)
@@ -129,7 +130,7 @@ public class MechanicPlatforms : PlatformsBase
             platformVelocity = (nextPos - platformRb.position) / Time.fixedDeltaTime;
             platformRb.MovePosition(nextPos);
 
-            if (Vector2.Distance(platformRb.position, initialPos) <= 0.001f)
+            if (Vector2.Distance(nextPos, initialPos) <= 0.001f)
             {
                 shouldSound = true;
                 currentState = PlatformState.Idle;

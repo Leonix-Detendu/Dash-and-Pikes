@@ -111,8 +111,14 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (shouldDebug)
+        {
+            Debug.Log($"[{Time.frameCount}] isGrounded={isGrounded} platformVel={currentPBase?.platformVelocity} playerVelY={rb.linearVelocity.y}");
+        }
 
         Vector2 currentPlatformVelocity = platformCalculations();
+
+        if (isGrounded) isJumping = false;
 
         if (!isDashing)
         {
@@ -302,8 +308,6 @@ public class PlayerController : MonoBehaviour
 
         TurnCharacter(isGrounded);
 
-        if (isGrounded) isJumping = false;
-
         PlatformsBase newPBase = null;
 
         if (groundCollider != null) newPBase = groundCollider.GetComponent<PlatformsBase>();
@@ -324,7 +328,7 @@ public class PlayerController : MonoBehaviour
 
         Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
 
-        if (isGrounded && currentPBase != null && !isDashing )
+        if (isGrounded && currentPBase != null && !isDashing && !isJumping)
         {
             Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
 
