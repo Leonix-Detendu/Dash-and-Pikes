@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class LevelManager : MonoBehaviour
 {
     public GameObject[] levelPatterns;
+    [SerializeField] private List<GameObject> levelsRemaining = new List<GameObject>();
     public GameObject firstLevel;
     public bool shouldChangeLevel;
     private GameObject currentLevel;
@@ -11,11 +14,14 @@ public class LevelManager : MonoBehaviour
     { 
         LevelData firstLevelData = firstLevel.GetComponent<LevelData>();
 
+        fillLevelsList();
+
+        levelsRemaining.Remove(firstLevel); 
+
         Vector3 startLocalPos = firstLevelData.startPos.localPosition;
 
-        firstLevel = Instantiate(firstLevel, -startLocalPos, firstLevel.transform.rotation);
+        currentLevel = Instantiate(firstLevel, -startLocalPos, firstLevel.transform.rotation);
 
-        currentLevel = firstLevel;
     }
 
     private void Update()
@@ -29,9 +35,20 @@ public class LevelManager : MonoBehaviour
 
     private void GenerateNewLevel()
     {
-        int indexOfNextLevel = Random.Range(0, levelPatterns.Length);
+        GameObject nextLevelPrefab;
 
-        GameObject nextLevelPrefab = levelPatterns[indexOfNextLevel];
+        if (levelsRemaining.Count == levelPatterns.Length)
+        {
+            nextLevelPrefab = firstLevel;
+        }
+        else
+        {
+            int indexOfNextLevel = Random.Range(0, levelsRemaining.Count);
+
+            nextLevelPrefab = levelsRemaining[indexOfNextLevel];
+        }
+
+        levelsRemaining.Remove(nextLevelPrefab);
 
         LevelData currentLevelData = currentLevel.GetComponent<LevelData>();
         Vector3 currentFinalPos = currentLevelData.endPos.position;
@@ -45,5 +62,18 @@ public class LevelManager : MonoBehaviour
 
         Destroy(currentLevel);
         currentLevel = nextLevel;
+
+        if (levelsRemaining.Count == 0)
+        {
+            fillLevelsList();
+        }
+    }
+
+    private void fillLevelsList()
+    {
+        foreach (GameObject level in levelPatterns)
+        {
+            levelsRemaining.Add(level);
+        }
     }
 }

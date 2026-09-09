@@ -30,6 +30,7 @@ public class TempPlatforms : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             StartCoroutine(IsPlayerGroundedRoutine());
+            Debug.Log(playerControllerScript.isGrounded);
         }
     }
 
@@ -38,6 +39,8 @@ public class TempPlatforms : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         yield return new WaitForFixedUpdate();
+
+        Debug.Log(playerControllerScript.isGrounded);
 
         if (shouldDisappear && playerControllerScript.isGrounded)
         {

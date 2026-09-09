@@ -15,10 +15,11 @@ public class PlayerController : MonoBehaviour
     private bool isDashing;
     public float dashRange;
     private float dashStack;
+    private Vector2 dashVelocity;
 
     [Header("Detection du Sol")]
     public Transform groundCheck;
-    public float checkRadius;
+    public Vector2 groundCheckSize;
     public LayerMask groundLayer;
     private Rigidbody2D rb;
     private float moveInput;
@@ -110,63 +111,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Collider2D groundCollider = Physics2D.OverlapCircle(groundCheck.position, checkRadius, groundLayer);
 
-        isGrounded = groundCollider != null && !groundCollider.isTrigger;
-
-        if (!wasGrounded && isGrounded)
-        {
-            audioSource.PlayOneShot(landingSound, 0.4f);
-        }
-
-        wasGrounded = isGrounded;
-
-        animator.SetBool("isGrounded", isGrounded);
-
-        TurnCharacter(isGrounded);
-
-        if (shouldDebug)
-        {
-            Debug.Log(isGrounded);
-            shouldDebug = false;
-        }
-
-        if (isGrounded) isJumping = false;
-
-        PlatformsBase newPBase = null;
-
-        if (groundCollider != null) newPBase = groundCollider.GetComponent<PlatformsBase>();
-
-        if (newPBase != null)
-        {
-            if (newPBase != currentPBase)
-            {
-                currentPBase = newPBase;
-                lastPlatformVelocity = Vector2.zero;
-            }
-        }
-        else
-        {
-            currentPBase = null;
-            lastPlatformVelocity = Vector2.zero;
-        }
-
-        Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
-
-        if ( isGrounded && currentPBase != null ) 
-        { 
-            Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
-
-            if (velocityChange.sqrMagnitude > 0.001f)
-            {
-                rb.linearVelocity += velocityChange;
-            }
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentPlatformVelocity.y);
-
-        }
-
-        lastPlatformVelocity = currentPlatformVelocity;
+        Vector2 currentPlatformVelocity = platformCalculations();
 
         if (!isDashing)
         {
@@ -183,6 +129,10 @@ public class PlayerController : MonoBehaviour
             {
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, maxVelocityY);
             }
+        }
+        else
+        {
+            rb.linearVelocity = dashVelocity + currentPlatformVelocity;
         }
     }
 
@@ -222,6 +172,7 @@ public class PlayerController : MonoBehaviour
         isDashing = true;
         rb.gravityScale = 0;
         rb.linearVelocity = dashRange * dashDirection;
+        dashVelocity = rb.linearVelocity;
         dashStack--;
 
         // Délai jusqu'à la fin du dash
@@ -231,6 +182,7 @@ public class PlayerController : MonoBehaviour
         rb.linearVelocity *= 0.5f;
         rb.gravityScale = defaultGS;
         isDashing = false;
+        dashVelocity = Vector2.zero;
         animator.SetBool("isDashing", false);
     }
 
@@ -331,5 +283,62 @@ public class PlayerController : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -maxFallSpeed);
         }
+    }
+
+    private Vector2 platformCalculations()
+    {
+        Collider2D groundCollider = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
+
+        isGrounded = groundCollider != null && !groundCollider.isTrigger;
+
+        if (!wasGrounded && isGrounded)
+        {
+            audioSource.PlayOneShot(landingSound, 0.4f);
+        }
+
+        wasGrounded = isGrounded;
+
+        animator.SetBool("isGrounded", isGrounded);
+
+        TurnCharacter(isGrounded);
+
+        if (isGrounded) isJumping = false;
+
+        PlatformsBase newPBase = null;
+
+        if (groundCollider != null) newPBase = groundCollider.GetComponent<PlatformsBase>();
+
+        if (newPBase != null)
+        {
+            if (newPBase != currentPBase)
+            {
+                currentPBase = newPBase;
+                lastPlatformVelocity = Vector2.zero;
+            }
+        }
+        else
+        {
+            currentPBase = null;
+            lastPlatformVelocity = Vector2.zero;
+        }
+
+        Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
+
+        if (isGrounded && currentPBase != null && !isDashing )
+        {
+            Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
+
+            if (velocityChange.sqrMagnitude > 0.001f)
+            {
+                rb.linearVelocity += velocityChange;
+            }
+
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentPlatformVelocity.y);
+
+        }
+
+        lastPlatformVelocity = currentPlatformVelocity;
+
+        return currentPlatformVelocity;
     }
 }

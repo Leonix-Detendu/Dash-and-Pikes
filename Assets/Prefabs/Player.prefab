@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1973171902882216132}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.85, z: 0}
+  m_LocalPosition: {x: 0, y: -0.95, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -114,7 +114,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.0436897, y: 1.8859816}
+  m_Size: {x: 1.05, y: 1.9}
   m_EdgeRadius: 0
 --- !u!50 &4019503978147064928
 Rigidbody2D:
@@ -162,7 +162,7 @@ MonoBehaviour:
   friction: 5.5
   dashRange: 20
   groundCheck: {fileID: 7742342211615983762}
-  checkRadius: 0.2
+  groundCheckSize: {x: 1, y: 0.05}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -182,6 +182,7 @@ MonoBehaviour:
   jumpSound: {fileID: 8300000, guid: ba39bf8baf6d13046889b2d64822381a, type: 3}
   dashSound: {fileID: 8300000, guid: 56703418e3aed4c47a5f6622816b8e41, type: 3}
   superJumpSound: {fileID: 8300000, guid: 7c47b20bb9874304a809dc5580d403ba, type: 3}
+  landingSound: {fileID: 8300000, guid: eaae8fe8d600e1f459f34aa5757fa3b8, type: 3}
 --- !u!114 &3848247612004862396
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +198,7 @@ MonoBehaviour:
   initialHealth: 3
   gameOver: 0
   respawnPos: {x: 0, y: 0}
+  deathSound: {fileID: 8300000, guid: c458b6714dab015479d507b21fd2cead, type: 3}
 --- !u!95 &4543115626002366893
 Animator:
   serializedVersion: 7
