@@ -1,4 +1,4 @@
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PlatformsBase : MonoBehaviour
@@ -8,9 +8,18 @@ public abstract class PlatformsBase : MonoBehaviour
     [HideInInspector] public bool shouldBoost {  get; protected set; }
     [HideInInspector] public Vector2 boostVector { get; protected set; }
 
+    protected Rigidbody2D platformRb;
+
     public float superBoost;
     public float angleBoost;
-    
+
+    public readonly HashSet<PlatformRider> currentRiders = new HashSet<PlatformRider>();
+
+    private void Awake()
+    {
+        platformRb = GetComponent<Rigidbody2D>();
+    }
+
     protected virtual void Start()
     {
         platformVelocity = Vector2.zero;
@@ -24,8 +33,22 @@ public abstract class PlatformsBase : MonoBehaviour
 
     }
 
-    protected virtual void FixedUpdate()
+    private void FixedUpdate()
     {
+        Vector2 delta = MovePlatform() - platformRb.position;
+        platformVelocity = delta / Time.fixedDeltaTime;
+    }
 
+    protected abstract Vector2 MovePlatform();
+
+    public void RegisterRider(PlatformRider rider)
+    {
+        currentRiders.Add(rider);
+        rider.NotifyRegistered(this);
+    }
+    public void UnregisterRider(PlatformRider rider)
+    {
+        currentRiders.Remove(rider);
+        rider.NotifyUnregistered(this);
     }
 }

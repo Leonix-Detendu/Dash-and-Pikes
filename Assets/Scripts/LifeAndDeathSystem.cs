@@ -97,6 +97,6 @@ public class LifeAndDeathSystem : MonoBehaviour
             CheckPoint.levelManager.shouldChangeLevel = true;
         }
 
-        Debug.Log("Nouveau point de respawn enregistré : " + respawnPos);
+         // Debug.Log("Nouveau point de respawn enregistré : " + respawnPos);
     }
 }

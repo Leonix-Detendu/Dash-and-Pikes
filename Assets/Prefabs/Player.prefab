@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 4543115626002366893}
   - component: {fileID: 3413628437370851655}
   - component: {fileID: 2422790357427173350}
+  - component: {fileID: 3861299386056813483}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -162,7 +163,7 @@ MonoBehaviour:
   friction: 5.5
   dashRange: 20
   groundCheck: {fileID: 7742342211615983762}
-  groundCheckSize: {x: 1, y: 0.05}
+  groundCheckSize: {x: 1, y: 0.4}
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
@@ -377,3 +378,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3861299386056813483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8823607740295910173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb66d66a178cfd047b0a132f59f719b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformRider

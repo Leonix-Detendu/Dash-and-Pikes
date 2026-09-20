@@ -16,7 +16,6 @@ public class MechanicPlatforms : PlatformsBase
     private float actualSpeed;
 
     public PlayerController playerMouvsScript;
-    private Rigidbody2D platformRb;
 
     private enum PlatformState { Idle, MovingToTarget, Paused, Returning }
     private PlatformState currentState = PlatformState.Idle;
@@ -89,7 +88,7 @@ public class MechanicPlatforms : PlatformsBase
         }
     }
 
-    protected override void FixedUpdate()
+    protected override Vector2 MovePlatform()
     {
         // On exécute le mouvement ICI pour être parfaitement synchro avec le joueur
         if (currentState == PlatformState.MovingToTarget)
@@ -118,6 +117,8 @@ public class MechanicPlatforms : PlatformsBase
                 // On accélère seulement si on n'est pas encore arrivé
                 actualSpeed = Mathf.Min( maxSpeed, actualSpeed * accelFactor);
             }
+
+            return nextPos;
         }
         else if (currentState == PlatformState.Returning)
         {
@@ -136,11 +137,13 @@ public class MechanicPlatforms : PlatformsBase
                 currentState = PlatformState.Idle;
                 platformRb.position = initialPos;
             }
+            return nextPos;
         }
         else
         {
             // Si on est en "Idle" ou en "Paused", on force la vélocité à 0
             platformVelocity = Vector2.zero;
+            return platformRb.position;
         }
     }
 

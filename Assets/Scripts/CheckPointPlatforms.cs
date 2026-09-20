@@ -18,4 +18,8 @@ public class CheckPointPlatforms : PlatformsBase
         respawnPos = (Vector2)compCollider.bounds.center + new Vector2(0, 1.5f);
     }
 
+    protected override Vector2 MovePlatform()
+    {
+        return platformRb.position;
+    }
 }

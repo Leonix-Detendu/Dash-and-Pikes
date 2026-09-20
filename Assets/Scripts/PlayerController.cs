@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using System;
 using System.Collections;
 using System.Runtime.CompilerServices;
@@ -28,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Reglages du saut et de la gravite")]
     private bool isJumping;
+    private bool hasJumped;
     public float jumpForce;
     public float defaultGS;
     public float jumpMultiplier;
@@ -41,7 +43,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Parametres de plateforme sur laquelle se tient le joueur")]
     public PlatformsBase currentPBase;
-    private Vector2 lastPlatformVelocity;
+    private PlatformRider rider;
 
     public float maxVelocityY;
     public float maxVelocityX;
@@ -55,9 +57,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioClip landingSound;
     private AudioSource audioSource;
     
-
     // Debug 
     private bool shouldDebug = false;
+    private int startFrameCounter;
 
     void Start()
     {
@@ -68,6 +70,7 @@ public class PlayerController : MonoBehaviour
         dashStack = 1;
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        rider = GetComponent<PlatformRider>();
     }
 
     void Update()
@@ -111,14 +114,15 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        platformCalculations();
+
+        if (isGrounded && !hasJumped) isJumping = false;
+
         if (shouldDebug)
         {
-            Debug.Log($"[{Time.frameCount}] isGrounded={isGrounded} platformVel={currentPBase?.platformVelocity} playerVelY={rb.linearVelocity.y}");
+            Debug.Log(isJumping);
+            shouldDebug = false;
         }
-
-        Vector2 currentPlatformVelocity = platformCalculations();
-
-        if (isGrounded) isJumping = false;
 
         if (!isDashing)
         {
@@ -126,6 +130,7 @@ public class PlayerController : MonoBehaviour
             GroundFriction();
             Jump();
             GravityManagement();
+            SyncDescendingPlatform();
 
             if ( Mathf.Abs(rb.linearVelocity.x) > maxVelocityX )
             {
@@ -138,7 +143,7 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            rb.linearVelocity = dashVelocity + currentPlatformVelocity;
+            rb.linearVelocity = dashVelocity;
         }
     }
 
@@ -194,9 +199,9 @@ public class PlayerController : MonoBehaviour
 
     private float Run()
     {
-        float platformVelocityX = (currentPBase == null) ? 0f : currentPBase.platformVelocity.x;
+        Vector2 currentPVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
 
-        float targetVelocityX = (moveSpeed * moveInput) + platformVelocityX;
+        float targetVelocityX = (moveSpeed * moveInput) + currentPVelocity.x;
 
         float velocityDiff = targetVelocityX - rb.linearVelocity.x;
 
@@ -206,7 +211,7 @@ public class PlayerController : MonoBehaviour
 
         rb.AddForce(movement * Vector2.right);
 
-        return rb.linearVelocityX - platformVelocityX;
+        return rb.linearVelocityX - currentPVelocity.x;
     }
 
     private void GroundFriction()
@@ -234,8 +239,7 @@ public class PlayerController : MonoBehaviour
 
             rb.gravityScale = defaultGS;
 
-            float platformVelX = currentPBase != null ? currentPBase.platformVelocity.x : 0;
-            float purePlayerSpeedX = rb.linearVelocity.x - platformVelX;
+            float purePlayerSpeedX = currentPBase != null ? rb.linearVelocityX - currentPBase.platformVelocity.x : 0;
 
             rb.linearVelocity = new Vector2(purePlayerSpeedX, 0);
 
@@ -262,6 +266,9 @@ public class PlayerController : MonoBehaviour
             }
                 
             isJumping = true;
+            hasJumped = true;
+            StartCoroutine(HasJumpedRoutine());
+            startFrameCounter = Time.frameCount;
             lastGroundedTimer = 0;
             jumpBufferTimer = 0;
         }
@@ -291,11 +298,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private Vector2 platformCalculations()
+    private void platformCalculations()
     {
         Collider2D groundCollider = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
 
-        isGrounded = groundCollider != null && !groundCollider.isTrigger;
+        isGrounded = groundCollider != null;
 
         if (!wasGrounded && isGrounded)
         {
@@ -308,41 +315,30 @@ public class PlayerController : MonoBehaviour
 
         TurnCharacter(isGrounded);
 
-        PlatformsBase newPBase = null;
+        currentPBase = rider.currentPlatform;
+    }
 
-        if (groundCollider != null) newPBase = groundCollider.GetComponent<PlatformsBase>();
+    IEnumerator HasJumpedRoutine()
+    {
 
-        if (newPBase != null)
+        for (int i = 0; i < 9; i++)
         {
-            if (newPBase != currentPBase)
-            {
-                currentPBase = newPBase;
-                lastPlatformVelocity = Vector2.zero;
-            }
-        }
-        else
-        {
-            currentPBase = null;
-            lastPlatformVelocity = Vector2.zero;
+            yield return new WaitForEndOfFrame();
         }
 
-        Vector2 currentPlatformVelocity = (currentPBase != null) ? currentPBase.platformVelocity : Vector2.zero;
+        hasJumped = false;
+    }
 
-        if (isGrounded && currentPBase != null && !isDashing && !isJumping)
+    private void SyncDescendingPlatform()
+    {
+        if (currentPBase == null || !isGrounded || isJumping) return;
+
+        float platformVelY = currentPBase.platformVelocity.y;
+
+        if (platformVelY < rb.linearVelocity.y)
         {
-            Vector2 velocityChange = currentPlatformVelocity - lastPlatformVelocity;
-
-            if (velocityChange.sqrMagnitude > 0.001f)
-            {
-                rb.linearVelocity += velocityChange;
-            }
-
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, currentPlatformVelocity.y);
-
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, platformVelY);
         }
-
-        lastPlatformVelocity = currentPlatformVelocity;
-
-        return currentPlatformVelocity;
     }
 }
+

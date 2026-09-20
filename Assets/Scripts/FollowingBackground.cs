@@ -25,8 +25,6 @@ public class FollowingBackground : MonoBehaviour
 
         transform.position = player.transform.position;
         gridCenter = player.transform.position;
-
-        Debug.Log(gridCenter);
     }
 
     private void Update()

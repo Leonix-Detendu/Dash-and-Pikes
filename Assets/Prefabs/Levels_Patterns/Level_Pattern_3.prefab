@@ -371,7 +371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513168788216462432, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6513168788216462432, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[0].x
@@ -526,7 +526,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6513168788216462432, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6513168788216462432, guid: 0f89a8bef9c9f514fbe280195dcfb5f4, type: 3}
       propertyPath: m_CompositePaths.m_Paths.Array.data[0].Array.data[0].x
@@ -661,7 +661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
@@ -833,7 +833,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 350340094821307126, guid: a778efa33723bdc4a9a9d845fe4c110e, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 350340094821307126, guid: a778efa33723bdc4a9a9d845fe4c110e, type: 3}
       propertyPath: m_ColliderPaths.Array.data[1].m_Collider
@@ -981,7 +981,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 350340094821307126, guid: a778efa33723bdc4a9a9d845fe4c110e, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 350340094821307126, guid: a778efa33723bdc4a9a9d845fe4c110e, type: 3}
       propertyPath: m_ColliderPaths.Array.data[1].m_Collider
@@ -1241,7 +1241,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
@@ -1453,7 +1453,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
@@ -1665,7 +1665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2820682647896702441, guid: f760b2b1ece0b41428a6b99158cb6846, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
@@ -1877,7 +1877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4938526537524388687, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
       propertyPath: m_ColliderPaths.Array.size
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4938526537524388687, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
       propertyPath: m_ColliderPaths.Array.data[0].m_Collider
@@ -2147,12 +2147,17 @@ MonoBehaviour:
   superBoost: 30
   angleBoost: 90
   initialSpeed: 5
+  maxSpeed: 30
   accelFactor: 1.2
   timeStop: 1
   angle: 90
   range: 5
   playerMouvsScript: {fileID: 0}
   delayToBoost: 0.3
+  movingSound: {fileID: 8300000, guid: 6106d8410a9ae2249a8bd9beb250258e, type: 3}
+  impactSound: {fileID: 8300000, guid: 5d233090e1c66cb479167a21509ddb37, type: 3}
+  mvToTargetDelay: 0.1
+  returningDelay: 0.4
 --- !u!61 &4649276182231182633 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 3951608618705626588, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}

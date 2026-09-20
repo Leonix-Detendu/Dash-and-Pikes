@@ -526,12 +526,17 @@ MonoBehaviour:
   superBoost: 0
   angleBoost: 0
   initialSpeed: 5
+  maxSpeed: 30
   accelFactor: 1.2
   timeStop: 1.5
   angle: 90
   range: 5.5
   playerMouvsScript: {fileID: 0}
   delayToBoost: 0
+  movingSound: {fileID: 8300000, guid: 6106d8410a9ae2249a8bd9beb250258e, type: 3}
+  impactSound: {fileID: 8300000, guid: 5d233090e1c66cb479167a21509ddb37, type: 3}
+  mvToTargetDelay: 0.1
+  returningDelay: 0.4
 --- !u!1001 &66641778115768491
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1673,12 +1678,17 @@ MonoBehaviour:
   superBoost: 0
   angleBoost: 0
   initialSpeed: 5
+  maxSpeed: 30
   accelFactor: 1.2
   timeStop: 1.5
   angle: 90
   range: 5.5
   playerMouvsScript: {fileID: 0}
   delayToBoost: 0
+  movingSound: {fileID: 8300000, guid: 6106d8410a9ae2249a8bd9beb250258e, type: 3}
+  impactSound: {fileID: 8300000, guid: 5d233090e1c66cb479167a21509ddb37, type: 3}
+  mvToTargetDelay: 0.1
+  returningDelay: 0.4
 --- !u!1001 &5237336067245735095
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2211,12 +2221,17 @@ MonoBehaviour:
   superBoost: 0
   angleBoost: 0
   initialSpeed: 5
+  maxSpeed: 30
   accelFactor: 1.2
   timeStop: 1.5
   angle: 90
   range: 8.5
   playerMouvsScript: {fileID: 0}
   delayToBoost: 0
+  movingSound: {fileID: 8300000, guid: 6106d8410a9ae2249a8bd9beb250258e, type: 3}
+  impactSound: {fileID: 8300000, guid: 5d233090e1c66cb479167a21509ddb37, type: 3}
+  mvToTargetDelay: 0.1
+  returningDelay: 0.4
 --- !u!61 &5652105175309516400 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 1714952499536661679, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
@@ -2438,12 +2453,17 @@ MonoBehaviour:
   superBoost: 0
   angleBoost: 0
   initialSpeed: 5
+  maxSpeed: 30
   accelFactor: 1.2
   timeStop: 1.5
   angle: 90
   range: 5.5
   playerMouvsScript: {fileID: 0}
   delayToBoost: 0
+  movingSound: {fileID: 8300000, guid: 6106d8410a9ae2249a8bd9beb250258e, type: 3}
+  impactSound: {fileID: 8300000, guid: 5d233090e1c66cb479167a21509ddb37, type: 3}
+  mvToTargetDelay: 0.1
+  returningDelay: 0.4
 --- !u!4 &5402497190303856189 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1632273715944859710, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}

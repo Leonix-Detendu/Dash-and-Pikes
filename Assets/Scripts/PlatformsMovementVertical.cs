@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PlatformsMovementVertical : PlatformsBase
 {
-    private Rigidbody2D rb;
 
     public float rangeUp;
     public float rangeDown;
     public float speed;
     [Range(0, 2)] public float startOffset;
+    private float initialTime;
 
     private float defaultYPosition;
     private float totalRange;
@@ -16,25 +16,26 @@ public class PlatformsMovementVertical : PlatformsBase
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         defaultYPosition = transform.position.y;
         totalRange = rangeUp + rangeDown;
         offset = startOffset * totalRange;
+        initialTime = Time.time;
     }
 
     // Update is called once per frame
-    protected override void FixedUpdate()
+    protected override Vector2 MovePlatform()
     {
-        base.FixedUpdate();
 
-        float progress = Mathf.PingPong((Time.fixedTime * speed) + offset, totalRange);
+        float progress = Mathf.PingPong(((Time.fixedTime - initialTime) * speed) + offset, totalRange);
 
         float downBound = defaultYPosition - rangeDown;
 
         float nextPositionY = downBound + progress;
 
-        platformVelocity = new Vector2(platformVelocity.x, (nextPositionY - rb.position.y) / Time.fixedDeltaTime );
+        Vector2 nextPos = new Vector2(platformRb.position.x, nextPositionY);
 
-        rb.MovePosition(new Vector2(rb.position.x, downBound + progress));
+        platformRb.MovePosition(nextPos); 
+
+        return nextPos;
     }
 }
