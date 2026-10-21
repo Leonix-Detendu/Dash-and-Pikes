@@ -26,6 +26,10 @@ public class PlayerController : MonoBehaviour
     private float moveInput;
     public bool isGrounded;
     private bool wasGrounded;
+    private bool hasLeftGround;
+    private bool isFalling;
+    private ContactFilter2D groundContactFilter;
+    private readonly Collider2D[] groundResults = new Collider2D[4];
 
     [Header("Reglages du saut et de la gravite")]
     private bool isJumping;
@@ -40,9 +44,13 @@ public class PlayerController : MonoBehaviour
     public float coyoteTime;
     private float jumpBufferTimer;
     public float jBMaxTime;
+    private float startingJumpPointY;
+    [SerializeField] private float maxJumpHight;
+    private bool shouldLimitJumpHight;
 
     [Header("Parametres de plateforme sur laquelle se tient le joueur")]
     public PlatformsBase currentPBase;
+    private PlatformsBase lastPBase;
     private PlatformRider rider;
 
     public float maxVelocityY;
@@ -71,11 +79,17 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         rider = GetComponent<PlatformRider>();
+
+        groundContactFilter = new ContactFilter2D();
+        groundContactFilter.useTriggers = false; // ignore tous les colliders en mode trigger
+        groundContactFilter.SetLayerMask(groundLayer);
+        groundContactFilter.useLayerMask = true;
     }
 
     void Update()
     {
-        
+        if (GameManager.instance.gameIsPaused) return;
+       
         // Récupère les entrées de déplacement horizontal
         moveInput = Input.GetAxisRaw("Horizontal");
 
@@ -114,13 +128,16 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+
         platformCalculations();
 
-        if (isGrounded && !hasJumped) isJumping = false;
+        LimitJumpHight();
+
+        LeavingGroundDetection();
 
         if (shouldDebug)
         {
-            Debug.Log(isJumping);
+            Debug.Log(rb.position.y);
             shouldDebug = false;
         }
 
@@ -165,6 +182,14 @@ public class PlayerController : MonoBehaviour
     // Coroutine réalisant l'action de dash
     IEnumerator dashRoutine()
     {
+
+        // Action de Dash
+        Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        if (dashDirection.x == 0 && dashDirection.y == 0)
+        {
+            yield break;
+        }
+
         isJumping = false;
         rb.gravityScale = defaultGS;
 
@@ -174,12 +199,6 @@ public class PlayerController : MonoBehaviour
 
         audioSource.PlayOneShot(dashSound);
 
-        // Action de Dash
-        Vector2 dashDirection = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        if (dashDirection.x == 0 && dashDirection.y == 0)
-        {
-            yield break;
-        }
         isDashing = true;
         rb.gravityScale = 0;
         rb.linearVelocity = dashRange * dashDirection;
@@ -195,6 +214,7 @@ public class PlayerController : MonoBehaviour
         isDashing = false;
         dashVelocity = Vector2.zero;
         animator.SetBool("isDashing", false);
+        isFalling = true;
     }
 
     private float Run()
@@ -217,21 +237,37 @@ public class PlayerController : MonoBehaviour
     private void GroundFriction()
     {
         float targetVelocityX = (currentPBase == null) ? 0f : currentPBase.platformVelocity.x;
-
         float velocityDiff = targetVelocityX - rb.linearVelocity.x;
 
         if (isGrounded && moveInput == 0)
         {
-            if (Mathf.Abs(velocityDiff) <= friction)
-            {
-                rb.AddForce(Vector2.right * velocityDiff * rb.mass, ForceMode2D.Impulse);
-            }
+            // On prend la valeur la plus petite entre la différence de vitesse et la friction max
+            float amount = Mathf.Min(Mathf.Abs(velocityDiff), friction);
+
+            // On applique l'impulsion dans la direction de la différence
+            rb.AddForce(Vector2.right * amount * Mathf.Sign(velocityDiff) * rb.mass, ForceMode2D.Impulse);
+        }
+    }
+
+    private void LeavingGroundDetection()
+    {
+
+        hasLeftGround = false;
+
+        if (!isFalling && !isGrounded && !isJumping && !isDashing)
+        {
+            hasLeftGround = true;
+            isFalling = true;
+        }
+
+        if (hasLeftGround)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocityX, 0f);
         }
     }
 
     private void Jump()
     {
-
         // Action de saut
         if (jumpBufferTimer > 0 && lastGroundedTimer > 0 && !isJumping)
         {
@@ -239,28 +275,29 @@ public class PlayerController : MonoBehaviour
 
             rb.gravityScale = defaultGS;
 
-            float purePlayerSpeedX = currentPBase != null ? rb.linearVelocityX - currentPBase.platformVelocity.x : 0;
+            float purePlayerSpeedX = currentPBase != null ? rb.linearVelocityX - currentPBase.platformVelocity.x : rb.linearVelocityX;
 
             rb.linearVelocity = new Vector2(purePlayerSpeedX, 0);
 
             if (currentPBase != null && currentPBase.canBoost && currentPBase.shouldBoost)
             {
+                shouldLimitJumpHight = false;
                 audioSource.PlayOneShot(superJumpSound);
                 bool shouldBoostOnXAxis = (currentPBase.angleBoost <= Mathf.Abs(Mathf.PI / 2) && moveInput >= 0) || (currentPBase.angleBoost >= Mathf.Abs(Mathf.PI / 2) && moveInput <= 0 );
                 if ( shouldBoostOnXAxis )
                 {
                     rb.AddForce(currentPBase.boostVector, ForceMode2D.Impulse);
-                    Debug.Log("BoostTotal : " + currentPBase.boostVector);
                 }
                 else
                 {
                     Vector2 boostVectorOnlyOnYAxis = new Vector2(0, 1) * currentPBase.boostVector.y;
                     rb.AddForce(boostVectorOnlyOnYAxis, ForceMode2D.Impulse);
-                    Debug.Log("Boost sur Y uniquement : " + boostVectorOnlyOnYAxis);
                 }
             }
             else
             {
+                startingJumpPointY = rb.position.y;
+                shouldLimitJumpHight = true;
                 audioSource.PlayOneShot(jumpSound);
                 rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             }
@@ -271,6 +308,25 @@ public class PlayerController : MonoBehaviour
             startFrameCounter = Time.frameCount;
             lastGroundedTimer = 0;
             jumpBufferTimer = 0;
+        }
+    }
+
+    private void LimitJumpHight()
+    {
+        if (isJumping && shouldLimitJumpHight)
+        {
+            if (rb.position.y - maxJumpHight > startingJumpPointY)
+            {
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+                shouldLimitJumpHight = false;
+            }
+        }
+
+        if (isGrounded && !hasJumped)
+        {
+            isJumping = false;
+            isFalling = false;
+            shouldLimitJumpHight = false;
         }
     }
 
@@ -288,7 +344,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (rb.linearVelocity.y < 0f) rb.gravityScale = fallMultiplier;
+        if (rb.linearVelocity.y < 0 && !isGrounded)
+        {
+            rb.gravityScale = fallMultiplier; 
+            isFalling = true;
+        }
 
         if (isGrounded) rb.gravityScale = defaultGS;
 
@@ -300,9 +360,11 @@ public class PlayerController : MonoBehaviour
 
     private void platformCalculations()
     {
-        Collider2D groundCollider = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundLayer);
 
-        isGrounded = groundCollider != null;
+        int hitCount = Physics2D.OverlapBox(groundCheck.position, groundCheckSize, 0f, groundContactFilter, groundResults);
+        isGrounded = hitCount > 0;
+
+        Collider2D groundCollider = isGrounded ? groundResults[0] : null;
 
         if (!wasGrounded && isGrounded)
         {
@@ -310,12 +372,13 @@ public class PlayerController : MonoBehaviour
         }
 
         wasGrounded = isGrounded;
-
         animator.SetBool("isGrounded", isGrounded);
-
         TurnCharacter(isGrounded);
-
         currentPBase = rider.currentPlatform;
+        
+        if (lastGroundedTimer > 0 && !isGrounded) currentPBase = lastPBase;
+
+        lastPBase = currentPBase;
     }
 
     IEnumerator HasJumpedRoutine()
@@ -331,11 +394,11 @@ public class PlayerController : MonoBehaviour
 
     private void SyncDescendingPlatform()
     {
-        if (currentPBase == null || !isGrounded || isJumping) return;
+        if (currentPBase == null || !isGrounded || isJumping ) return;
 
         float platformVelY = currentPBase.platformVelocity.y;
 
-        if (platformVelY < rb.linearVelocity.y)
+        if (platformVelY < rb.linearVelocity.y || platformVelY <= 0)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, platformVelY);
         }

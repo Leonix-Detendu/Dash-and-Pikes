@@ -71,6 +71,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8884430315243922903}
+  - component: {fileID: 7660177937682519722}
   m_Layer: 0
   m_Name: Level_Pattern_5
   m_TagString: Untagged
@@ -111,6 +112,21 @@ Transform:
   - {fileID: 4369249282190094367}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7660177937682519722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3218225115479337943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8df215287291f384bb991fcbf34dfc60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelData
+  startPos: {fileID: 3708099234200983586}
+  endPos: {fileID: 4348574574998196648}
+  deadZone: {fileID: 3686863688839548036}
 --- !u!1 &3686863688839548036
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 8291998165402769386}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: -10}
+  m_LocalPosition: {x: 0, y: 6, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -288,7 +304,7 @@ MonoBehaviour:
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 10
+    OrthographicSize: 12
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -472,6 +488,22 @@ PrefabInstance:
     - target: {fileID: 6311606536066374690, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
       propertyPath: m_Name
       value: 6-BlocksRectangle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.x
+      value: 1.9821401
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.y
+      value: 0.3039646
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.90480304
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.y
+      value: 1.3948314
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1625,6 +1657,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: 6-BlocksRectangle (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.x
+      value: 1.8547287
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.y
+      value: 0.23402739
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.9412346
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.y
+      value: 1.3938739
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2193,6 +2241,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: 6-BlocksRectangle (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.x
+      value: 0.30491036
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.001277715
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2424,6 +2480,22 @@ PrefabInstance:
     - target: {fileID: 6311606536066374690, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
       propertyPath: m_Name
       value: 6-BlocksRectangle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.x
+      value: 1.8564644
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.y
+      value: 0.31267285
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.93036556
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.y
+      value: 1.3561105
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

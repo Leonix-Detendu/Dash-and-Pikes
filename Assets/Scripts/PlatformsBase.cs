@@ -14,6 +14,7 @@ public abstract class PlatformsBase : MonoBehaviour
     public float angleBoost;
 
     public readonly HashSet<PlatformRider> currentRiders = new HashSet<PlatformRider>();
+    protected bool shouldRide;
 
     private void Awake()
     {
@@ -50,5 +51,13 @@ public abstract class PlatformsBase : MonoBehaviour
     {
         currentRiders.Remove(rider);
         rider.NotifyUnregistered(this);
+    }
+
+    public void ForceDetachAllRiders()
+    {
+        foreach (var rider in new List<PlatformRider>(currentRiders))
+        {
+            UnregisterRider(rider);
+        }
     }
 }

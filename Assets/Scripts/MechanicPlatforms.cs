@@ -110,6 +110,7 @@ public class MechanicPlatforms : PlatformsBase
                 shouldSound = true;
                 currentState = PlatformState.Paused;
                 platformRb.position = targetPos; // On la snap parfaitement sur sa cible
+                nextPos = targetPos;
                 StartCoroutine(PauseRoutine());
             }
             else

@@ -70,7 +70,7 @@ Transform:
   m_GameObject: {fileID: 1885343885617362079}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3, y: 2.5, z: -10}
+  m_LocalPosition: {x: 6, y: 2.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -759,6 +759,14 @@ PrefabInstance:
     - target: {fileID: 6311606536066374690, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
       propertyPath: m_Name
       value: 6-BlocksRectangle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Size.x
+      value: 0.35165286
+      objectReference: {fileID: 0}
+    - target: {fileID: 7669823268620445024, guid: a3b773f514a98784a9a8733856ac18a9, type: 3}
+      propertyPath: m_Offset.x
+      value: 0.022093534
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

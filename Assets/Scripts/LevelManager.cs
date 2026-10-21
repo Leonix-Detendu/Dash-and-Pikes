@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class LevelManager : MonoBehaviour
 {
@@ -9,9 +10,15 @@ public class LevelManager : MonoBehaviour
     public GameObject firstLevel;
     public bool shouldChangeLevel;
     private GameObject currentLevel;
+    
+
+    [SerializeField] private GameObject canvas;
+    private UIManager UIManager;
 
     private void Start()
     { 
+        UIManager = canvas.GetComponent<UIManager>();
+
         LevelData firstLevelData = firstLevel.GetComponent<LevelData>();
 
         fillLevelsList();
@@ -29,6 +36,8 @@ public class LevelManager : MonoBehaviour
         if (shouldChangeLevel)
         {
             GenerateNewLevel();
+            GameManager.instance.score++;
+            UIManager.ActualizeScore(GameManager.instance.score);
             shouldChangeLevel = false;
         }
     }

@@ -12,7 +12,7 @@ public class CheckPointPlatforms : PlatformsBase
     protected override void Start()
     {
         base.Start();
-        levelManager = GameObject.Find("SpawnManager").GetComponent<LevelManager>();
+        levelManager = GameManager.instance.gameObject.GetComponent<LevelManager>();
         compCollider = GetComponent<CompositeCollider2D>();
         compCollider.GenerateGeometry();
         respawnPos = (Vector2)compCollider.bounds.center + new Vector2(0, 1.5f);

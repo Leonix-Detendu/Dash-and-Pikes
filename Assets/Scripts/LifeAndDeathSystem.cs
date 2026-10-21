@@ -4,10 +4,8 @@ using UnityEngine.Rendering.Universal.Internal;
 
 public class LifeAndDeathSystem : MonoBehaviour
 {
-    public float initialHealth;
-    private float healthBar;
-
-    public bool gameOver;
+    public int initialHealth;
+    private int healthBar;
 
     public Vector2 respawnPos;
     private bool isImmune;
@@ -16,15 +14,20 @@ public class LifeAndDeathSystem : MonoBehaviour
 
     private AudioSource audioSource;
     [SerializeField] private AudioClip deathSound;
+
+    [SerializeField] private GameObject Canvas;
+    private UIManager UIManager;
     
     void Start()
     {
-        gameOver = false;
+        audioSource = GetComponent<AudioSource>();
+        UIManager = Canvas.GetComponent<UIManager>();
+
         rb = GetComponent<Rigidbody2D>();
         healthBar = initialHealth;
+        UIManager.ActualizeHealth(healthBar);
         isImmune = false;
         Debug.Log(healthBar);
-        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -76,15 +79,15 @@ public class LifeAndDeathSystem : MonoBehaviour
         healthBar--;
         isImmune = true;
 
-        Debug.Log(healthBar);
+        UIManager.ActualizeHealth(healthBar);
 
         rb.position = respawnPos;
         rb.linearVelocity = Vector2.zero;
 
         if (healthBar <= 0)
         {
-            gameOver = true;
-            Debug.Log("game over");
+            GameManager.instance.gameOver = true;
+            Debug.Log(GameManager.instance.gameOver);
         }
     }
 

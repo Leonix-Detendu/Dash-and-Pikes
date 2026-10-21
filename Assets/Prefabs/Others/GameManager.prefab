@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1621398538603811919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4780481540127556985}
+  - component: {fileID: 7089410864491001521}
+  - component: {fileID: -9027065481970011723}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4780481540127556985
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621398538603811919}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7089410864491001521
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621398538603811919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3438b2d7f405a6f40b3fb7e9bbacea85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  levelPatterns:
+  - {fileID: 3832734561051898925, guid: 42ccf95796201b04bbae1493d0941c0e, type: 3}
+  - {fileID: 2840739374688104609, guid: d93fc063a64f97748b0b423e9dc99626, type: 3}
+  - {fileID: 1337877896927988214, guid: ec46268614416cd489701f3f146f8856, type: 3}
+  - {fileID: 6182291477414500047, guid: 5f6729aedd79ac941bd12db628d07378, type: 3}
+  - {fileID: 3218225115479337943, guid: 1ebc1511066ab8e4981a0464cc16826a, type: 3}
+  - {fileID: 1419169905522899723, guid: 77711cfaf6c6cec4cbdff82085334e11, type: 3}
+  - {fileID: 864319033534740949, guid: cd21f698be486ba479836c56f7987eb6, type: 3}
+  - {fileID: 234179869345923596, guid: c1930eebcca093948840ec65ba517682, type: 3}
+  - {fileID: 2661778370657048732, guid: 89f5718405e4ab140873a35fcb3fac01, type: 3}
+  - {fileID: 3444322427912296577, guid: ea65f6740ac1b674b903947fc14d2a3f, type: 3}
+  levelsRemaining: []
+  firstLevel: {fileID: 3832734561051898925, guid: 42ccf95796201b04bbae1493d0941c0e, type: 3}
+  shouldChangeLevel: 0
+--- !u!114 &-9027065481970011723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1621398538603811919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a219bab0501cf84fb43b59cbd8c6ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  gameIsPaused: 0
+  pauseMenu: {fileID: 3205116375095257228, guid: 1740825d7a023af47878e24e0ee2eee9, type: 3}
+  settingsMenu: {fileID: 5811560292467509070, guid: da0b896a27b6849498a8256b20361dc5, type: 3}

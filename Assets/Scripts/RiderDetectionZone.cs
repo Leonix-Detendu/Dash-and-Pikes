@@ -17,6 +17,10 @@ public class RiderDetectionZone : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
+        if(this.gameObject.TryGetComponent<MechanicPlatforms>(out MechanicPlatforms mP))
+        {
+            Debug.Log(transform.position.y);
+        }
         PlatformRider rider = collision.GetComponent<PlatformRider>();
         if (rider != null && owner != null) owner.UnregisterRider(rider);
     }

@@ -1441,7 +1441,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2654425364211782524, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.375
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 2654425364211782524, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1635,10 +1635,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementVertical
   superBoost: 0
   angleBoost: 0
-  rangeUp: 1.125
-  rangeDown: 1.125
+  rangeUp: 2
+  rangeDown: 2
   speed: 3
-  startOffset: 0
+  startOffset: 0.5
 --- !u!1001 &4761150340893826172
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1657,7 +1657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2654425364211782524, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.75
+      value: -4
       objectReference: {fileID: 0}
     - target: {fileID: 2654425364211782524, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1846,7 +1846,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlatformsMovementVertical
   superBoost: 0
   angleBoost: 0
-  rangeUp: 2.25
+  rangeUp: 4
   rangeDown: 0
   speed: 3
   startOffset: 0
@@ -2674,9 +2674,9 @@ MonoBehaviour:
   superBoost: 0
   angleBoost: 0
   rangeUp: 0
-  rangeDown: 2.25
+  rangeDown: 4
   speed: 3
-  startOffset: 0
+  startOffset: 1
 --- !u!61 &8454556722147478954 stripped
 BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 3196459298225019033, guid: fd28a6ca596f7194493e484a69b33d6c, type: 3}

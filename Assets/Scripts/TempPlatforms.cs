@@ -1,7 +1,8 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class TempPlatforms : MonoBehaviour
+public class TempPlatforms : PlatformsBase
 {
     private bool shouldDisappear = true;
     public float disappearDelay;
@@ -12,37 +13,29 @@ public class TempPlatforms : MonoBehaviour
     private BoxCollider2D[] childrenColliders2D;
     private CompositeCollider2D platformCollider;
 
+    private RiderDetectionZone detectionZone;
     // Ajout d'un filtre pour vérifier les collisions
     private ContactFilter2D contactFilter;
 
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         playerControllerScript = GameObject.Find("Player").GetComponent<PlayerController>();
         childrenRenderers = GetComponentsInChildren<SpriteRenderer>();
         platformCollider = GetComponent<CompositeCollider2D>();
         childrenColliders2D = GetComponentsInChildren<BoxCollider2D>();
 
+        detectionZone = GetComponentInChildren<RiderDetectionZone>();
+
         contactFilter = ContactFilter2D.noFilter;
+
+        childrenColliders2D[childrenColliders2D.Length - 1] = null;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void FixedUpdate()
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            StartCoroutine(IsPlayerGroundedRoutine());
-            Debug.Log(playerControllerScript.isGrounded);
-        }
-    }
-
-    IEnumerator IsPlayerGroundedRoutine()
-    {
-        yield return new WaitForFixedUpdate();
-
-        yield return new WaitForFixedUpdate();
-
-        Debug.Log(playerControllerScript.isGrounded);
-
-        if (shouldDisappear && playerControllerScript.isGrounded)
+        if ( currentRiders.Contains( playerControllerScript.gameObject.GetComponent<PlatformRider>() ) && shouldDisappear )
         {
             StartCoroutine(DisappearRoutine());
             shouldDisappear = false;
@@ -63,6 +56,8 @@ public class TempPlatforms : MonoBehaviour
         // 3. Au lieu de désactiver le collider, on le passe en Trigger (Fantôme)
         SetCollidersTriggerState(true);
 
+        detectionZone.enabled = false;
+
         // 4. Délai avant réapparition
         yield return new WaitForSeconds(reappearDelay);
 
@@ -77,6 +72,10 @@ public class TempPlatforms : MonoBehaviour
 
         // 7. La voie est libre, on redonne sa solidité à la plateforme
         SetCollidersTriggerState(false);
+        
+        ForceDetachAllRiders();
+        
+        detectionZone.enabled = true;
 
         shouldDisappear = true;
     }
@@ -120,5 +119,10 @@ public class TempPlatforms : MonoBehaviour
         }
 
         return false;
+    }
+
+    protected override Vector2 MovePlatform()
+    {
+        return platformRb.position;
     }
 }
